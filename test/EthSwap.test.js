@@ -89,7 +89,7 @@ contract('EthSwap', ([deployer, investor]) => {
             assert.equal(event.amount.toString(), tokens('100').toString())
             assert.equal(event.rate.toString(), '100')
 
-            // FAILURE: Incestor can't sell more tokens than they have
+            // FAILURE: Investor can't sell more tokens than they have
             await ethSwap.sellTokens(tokens('500'), { from: investor }).should.be.rejected
         })
     })
