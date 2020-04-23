@@ -5,12 +5,18 @@ import EthSwap from '../abis/EthSwap.json'
 import './App.css'
 import Navbar from './Navbar'
 import Main from './Main'
+import MetamaskAlert from './MetamaskAlert'
 
 class App extends Component {
 
   async componentWillMount() {
-    await this.loadWeb3()
-    await this.loadBlockchainData()
+    // Detect Metamask
+    const metamaskInstalled = typeof window.web3 !== 'undefined'
+    this.setState({ metamaskInstalled })
+    if (metamaskInstalled) {
+      await this.loadWeb3()
+      await this.loadBlockchainData()
+    }
   }
 
   async loadBlockchainData() {
@@ -88,7 +94,8 @@ class App extends Component {
       ethSwap: {},
       tokenBalance: '0',
       ethBalance: '0',
-      loading: true
+      loading: true,
+      metamaskInstalled: false
     }
   }
 
@@ -112,7 +119,7 @@ class App extends Component {
           <div className="row">
             <main role="main" className="col-lg-12 ml-auto mr-auto" style={{ maxWidth: '600px' }}>
               <div className="content mr-auto ml-auto">
-                {content}
+                {this.state.metamaskInstalled ? content : <MetamaskAlert />}
               </div>
             </main>
           </div>
